@@ -1,0 +1,70 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- Configuration for the default package. -->
+    <package name="default" extends="struts-default" namespace="/"> 
+        <action name="" class="relearn.struts2.InitAction">
+            <result name="success" type="redirectAction">
+                search
+            </result>
+            <result name="fail">
+                login.html
+            </result>
+        </action>
+        <action name="login" class="relearn.struts2.LoginAction"> 
+            <result name="success" type="redirectAction">
+                search
+            </result>
+            <result name="fail">
+                loginInvalid.html
+            </result>
+        </action>
+        <action name="try"> 
+            <result>login.html</result>
+        </action>
+        <action name="search" class="relearn.struts2.SearchAction"> 
+            <result name="success">
+             dashBoard.jsp
+            </result>
+            <result name="fail">
+                ErrorPage.html
+            </result>
+        </action>
+        <action name="delete" class="relearn.struts2.DeleteAction"> 
+            <result name="success" type="redirectAction">
+                <param name="actionName">search</param>
+                <param name="searchValue">${lastSearchValue}</param>
+                <param name="currentFilter">${currentFilter}</param>
+                
+            </result>
+            <result name="fail">
+                ErrorPage.html
+            </result>
+        </action>
+        <action name="filter" class="relearn.struts2.FilterAction"> 
+            <result name="success" type="redirectAction">
+                <param name="actionName">search</param>
+                <param name="searchValue">${lastSearchValue}</param>
+                <param name="currentFilter">${currentFilter}</param>
+                <param name="isFilter">${isFilter}</param>
+            </result>
+            <result name="fail">
+                ErrorPage.html
+            </result>
+        </action>
+          <action name="updateRecord" class="relearn.struts2.UpdateRecordAction"> 
+            <result name="success" type="redirectAction">
+                <param name="actionName">search</param>
+                <param name="searchValue">${lastSearchValue}</param>
+                <param name="currentFilter">${currentFilter}</param>
+                <param name="isFilter">${isFilter}</param>
+            </result>
+            <result name="fail">
+                ErrorPage.html
+            </result>
+        </action>
+  
+    </package>
+</struts>
