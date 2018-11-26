@@ -45,7 +45,7 @@
             </ul>
         </div>
         <s:if test="%{products != null and products.size() > 0}">
-            <table border="1">
+            <table border="1" >
                 <thead>
                     <tr>
                         <th>STT</th>
@@ -60,7 +60,7 @@
                 </thead>
                 <tbody>
                     <s:iterator var="product" value="products" status="counter">
-                        <s:form action="updateRecord">
+                        <s:form action="updateRecord" theme="simple">
                                             <tr >
                                 <td><s:property value="%{#counter.count}"/></td> 
                                 <td>
