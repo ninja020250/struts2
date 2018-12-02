@@ -1,6 +1,6 @@
 <%-- 
-    Document   : DashBoard
-    Created on : Nov 21, 2018, 3:05:17 PM
+    Document   : dashboard
+    Created on : Nov 27, 2018, 2:29:30 PM
     Author     : nhatc
 --%>
 
@@ -10,97 +10,101 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>DashBoard</title>
-        <link rel="stylesheet" href="assets/css/dashboard.css"/>
+        <title>JSP Page</title>
+        <style>
+            .message{
+                color: red;
+            }
+        </style>
     </head>
     <body>
-        <script src="assets/js/dashboard.js"></script>
-        <h1>Hello ${sessionScope.USER.username} </h1>
-        <s:set var="currentFilter" value="%{currentFilter}"></s:set>
-            <div class="search-form">
-                <form method="GET" action="search">
-                    <label>Search: </label> <s:textfield name="searchValue" />
-                <input type="submit" value="Search"/>
-                <input type="hidden"  name="currentFilter" value="<s:property value="#currentFilter"/>"/>
+        <h1 class="message" >
+        <s:property value="#request.test" />
+        </h1>
+        <s:property value="%{#request.DASHBOARD_ERROR.deleteError}"/>
+        <h1>welcome ${sessionScope.CUSTOMER.fullname}</h1>
+        <div class="form-group">
+            <form action="search">
+                <s:textfield name="searchValue" value="%{searchValue}"/>
+                <button value="Search" type="submit">Search</button>
             </form>
         </div>
-        <div class="items-filter">
+        <div class="list-filter">
             <ul>
-                <div class="item-type active" onClick="filterItem(event)">
-                    <s:url var="filter" value="filter" >
-                        <s:param name="currentFilter" value="-1" />
-                        <s:param name="lastSearchValue" value="searchValue" />
+                <s:url var="filter" value="filter">
+                    <s:param name="filterValue" value="-1"/>
+                    <s:param name="lastSearchValue" value="%{searchValue}"/>
+                </s:url>
+                <s:a href="%{filter}">All(${numberAllCustomer})</s:a>
+                <s:iterator var="role" value="roles">
+                    <s:url var="filter" value="filter">
+                        <s:param name="filterValue" value="%{#role.id}"/>
+                        <s:param name="lastSearchValue" value="%{searchValue}"/>
                     </s:url>
-                    <s:a href="%{filter}" >All(${numberAllProduct})</s:a>
-                    </div>
-                <s:iterator var="type" value="listType">
-                    <div class="item-type" onClick="filterItem(event)"> 
-                        <s:url var="filter" value="filter" >
-                            <s:param name="currentFilter" value="%{#type.id}" />
-                            <s:param name="lastSearchValue" value="%{searchValue}" />
-                        </s:url>
-                        <s:a href="%{filter}"><s:property value="%{#type.name}"/>(${type.number})</s:a>
-                        </div>
+                    <s:a href="%{filter}">${role.name}(${role.totalProduct})</s:a>
                 </s:iterator>
             </ul>
         </div>
-        <s:if test="%{products != null and products.size() > 0}">
-            <table border="1" >
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>ID</th>
-                        <th>NAME</th>
-                        <th>PRICE</th>
-                        <th>IS_SALE</th>
-                        <th>TYPE</th>
-                        <th>Delete</th>
-                        <th>Update</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <s:iterator var="product" value="products" status="counter">
-                        <s:form action="updateRecord" theme="simple">
-                                            <tr >
-                                <td><s:property value="%{#counter.count}"/></td> 
-                                <td>
-                                    <s:property value="%{#product.id}"/>
-                                    <s:hidden name="id" value="%{#product.id}"/>
-                                </td>
-                                <td>
-                                    <input name="name" value="${product.name}"/>
-                                </td>
-                                <td><s:property value="%{#product.price}"/></td>
-                                <td><s:property value="%{#product.isSale}"/></td>
-                                <td>
-                                    <s:select name="productTypeId" list="itemList" 
-                                              value="%{#product.type.id}"
-                                               theme="simple"/>
-                                </td>
-                                <td>
-                                    <s:url var="delete" value="delete" >
-                                        <s:param name="productId" value="%{#product.id}" />
-                                        <s:param name="currentFilter" value="%{currentFilter}" />
-                                        <s:param name="lastSearchValue" value="searchValue" />
-                                    </s:url>
-                                    <s:a href="%{delete}" >DELETE</s:a>
+        <div class="search-result">
+            <s:if test="%{customers != null and customers.size() > 0}">
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>stt</th>
+                            <th>id</th>
+                            <th>username</th>
+                            <th>role</th>
+                            <th>full name</th>
+                            <th>Delete</th>
+                            <th>Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <s:iterator var="customer" value="customers" status="Couter">
+                            <s:form theme="simple" action="update">
+                                <tr>
+                                    <td>
+                                        <s:property value="%{#Couter.count}"/>
                                     </td>
                                     <td>
-                                        <button type="submit" >Update</button>
+                                        <s:property value="%{#customer.id}"/>
+                                        <s:hidden name="id" value="%{#customer.id}"/>
                                     </td>
-                                <s:hidden name="lastSearchValue" value="%{searchValue}"/>
-                                <s:hidden name="isFilter" value="%{isFilter}"/>
-                                <s:hidden name="currentFilter" value="%{currentFilter}" />
-                            </tr>
-                        </s:form>
-                    </s:iterator>
-                </tbody>
-            </table>
-        </s:if>
-        <s:if test="%{products == null or products.size() <= 0}">
-            khong co du lieu
-        </s:if>
+                                    <td>
+                                        <s:property value="%{#customer.username}"/>
+                                    </td>
+                                    <td>
+                                        <s:select name="roleId" 
+                                                  list="mapRoles"
+                                                  value="%{#customer.role.id}"
+                                                  theme="simple"/>
+                                    </td>
+                                    <td>
+                                        <s:textfield name="fullname" value="%{#customer.fullname}"/>
+                                    </td>
+                                    <td>
+                                        <s:url var="del" value="delete">
+                                            <s:param name="lastSearchValue" value="%{searchValue}"/>
+                                            <s:param name="customerId" value="%{#customer.id}"/>
+                                        </s:url>
+                                        <s:a href="%{del}">Delete</s:a>
+                                        </td>
+                                        <td>
+                                        <s:submit value="update"/>
+                                        <s:hidden name="lastSearchvalue" value="%{searchValue}"/>
+                                    </td>
+                                </tr> 
+                            </s:form>
+                        </s:iterator>                
+                    </tbody>
 
+                </table>
+            </s:if>
+            <s:else>
+                no data to display
+            </s:else>
+        </div>
+        <s:a href="signOut">Sign Out</s:a> 
 
     </body>
 </html>

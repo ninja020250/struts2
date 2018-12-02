@@ -9,25 +9,14 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="assets/css/login.css"/>
     </head>
     <body>
-        <script src="assets/js/login.js"></script>
-        <div class="login-form" >
-            <h1>Login form </h1>
-          
-            <form action="login" method="POST" id="login-form">
-                <div>
-                    <label>Username:</label>
-                    <input type="text" name="username" value="" id="username"/>
-                </div>
-                 <div>
-                    <label>Password:</label>
-                    <input type="password" name="password" value="" id="password"/>
-                </div>
-                <input type="button" value="Signin" class="btn-submit" onClick="login()"/>
+        <div>
+            <form action="login" method="POST">
+                <input type="text" name="username" value="" />
+                <input type="password" name="password" value="" />
+                <button type="submit">Login</button>
             </form>
-              <p id="error-login-message" class="err"></p>
         </div>
     </body>
 </html>
